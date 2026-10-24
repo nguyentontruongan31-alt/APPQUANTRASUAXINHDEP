@@ -496,9 +496,9 @@ elif page == "Về chúng mình":
     """, unsafe_allow_html=True)
 
     st.subheader("Thông tin cửa hàng")
-    st.write("📍 Địa chỉ: cập nhật địa chỉ cửa hàng tại đây")
+    st.write("📍 Địa chỉ: 1 Võ Văn Hát, phường Long Trường, TPHCM ")
     st.write("🕘 Giờ mở cửa: 09:00 – 22:00")
-    st.write("☎️ Hotline: cập nhật số điện thoại tại đây")
+    st.write("☎️ Hotline: 0123456789 ")
 
 
 # ==================== ĐÁNH GIÁ & HÓA ĐƠN ====================
