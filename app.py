@@ -1,67 +1,192 @@
 
 import streamlit as st
 import random
-import qrcode
-from io import BytesIO
+import html
 from datetime import datetime
 
 st.set_page_config(
-    page_title="MOON TEA",
-    page_icon="🌙",
-    layout="wide"
+    page_title="MOON TEA ✨ Pink Bling",
+    page_icon="💗",
+    layout="wide",
+    initial_sidebar_state="expanded",
 )
 
-# ===================== GIAO DIỆN =====================
+# =====================================================
+# 💗 PINK BLING THEME — KHÔNG CẦN THƯ VIỆN QR
+# =====================================================
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap');
+
+:root {
+    --pink: #ff70b8;
+    --hotpink: #ff3e9d;
+    --lightpink: #ffe3f1;
+    --purple: #c8a2ff;
+    --ink: #57334e;
+}
 
 .stApp {
-    background: linear-gradient(135deg, #fff8f5, #fff0f6, #f1edff);
+    background:
+        radial-gradient(ellipse at 10% 10%, #ffe0f0 0%, transparent 38%),
+        radial-gradient(ellipse at 90% 15%, #eadcff 0%, transparent 35%),
+        radial-gradient(ellipse at 50% 90%, #fff0f8 0%, transparent 40%),
+        #fff9fd;
+    color: var(--ink);
     font-family: 'DM Sans', sans-serif;
 }
-h1, h2, h3 { color: #75476e; }
-.hero {
-    padding: 28px;
-    border-radius: 24px;
-    background: linear-gradient(120deg, #fff, #ffe3ef, #e8e0ff);
-    box-shadow: 0 8px 25px #9d71941c;
-    margin-bottom: 22px;
+
+.stApp::before {
+    content: "✦  ✧  ✨  ⋆  ✦  ˚  ✧  ✨  ⋆  ✦  ✧  ˚  ✨";
+    position: fixed;
+    top: 4%;
+    left: 0;
+    width: 100%;
+    color: #ff72b7;
+    font-size: 21px;
+    letter-spacing: 30px;
+    opacity: .28;
+    pointer-events: none;
+    z-index: 0;
+    animation: sparkle 4s ease-in-out infinite alternate;
 }
+
+@keyframes sparkle {
+    0% { opacity: .12; transform: translateY(0); }
+    100% { opacity: .48; transform: translateY(12px); }
+}
+
+@keyframes glitter {
+    0%, 100% { filter: drop-shadow(0 0 2px #ffb6dc); }
+    50% { filter: drop-shadow(0 0 12px #ff62b0); }
+}
+
+h1, h2, h3 {
+    color: #a13d79;
+}
+
+.hero {
+    padding: 30px;
+    border-radius: 28px;
+    background: linear-gradient(120deg,
+        rgba(255,255,255,.96),
+        rgba(255,218,238,.95),
+        rgba(225,211,255,.96));
+    border: 1px solid white;
+    box-shadow: 0 12px 40px rgba(218, 92, 165, .18);
+    position: relative;
+    overflow: hidden;
+}
+
 .brand {
     font-family: 'Playfair Display', serif;
-    font-size: 44px;
-    color: #a35483;
-    font-weight: bold;
+    font-size: clamp(36px, 5vw, 60px);
+    font-weight: 700;
+    letter-spacing: 3px;
+    background: linear-gradient(90deg, #ff399d, #bb75e8, #ff78b9);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: glitter 3s infinite;
 }
-.card {
-    background: #ffffffd9;
-    padding: 18px;
-    border-radius: 18px;
-    border: 1px solid #f0d9e8;
-    margin-bottom: 12px;
+
+.hero-subtitle {
+    color: #956486;
+    font-size: 16px;
 }
+
+.pink-card {
+    background: rgba(255,255,255,.88);
+    border: 1px solid #ffd4e9;
+    padding: 17px;
+    border-radius: 22px;
+    box-shadow: 0 8px 26px rgba(205, 94, 157, .10);
+    margin-bottom: 15px;
+}
+
 .price {
-    color: #c45186;
-    font-weight: bold;
-    font-size: 20px;
+    font-size: 22px;
+    font-weight: 800;
+    color: #ec429a;
 }
+
+.pink-pill {
+    display: inline-block;
+    background: linear-gradient(90deg, #ffd4e9, #e8dcff);
+    border-radius: 20px;
+    padding: 5px 12px;
+    color: #9d4e85;
+    font-size: 12px;
+    font-weight: 800;
+}
+
 div.stButton > button,
 div.stFormSubmitButton > button {
-    background: linear-gradient(90deg, #d875a0, #a58be8);
+    border: 1px solid rgba(255,255,255,.9);
+    border-radius: 15px;
     color: white;
-    border: none;
-    border-radius: 12px;
-    font-weight: bold;
+    background: linear-gradient(100deg, #ff5ba8, #d58be9);
+    font-weight: 800;
+    box-shadow: 0 5px 15px rgba(255, 91, 168, .18);
+    transition: .2s;
 }
+
+div.stButton > button:hover,
+div.stFormSubmitButton > button:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(255, 91, 168, .32);
+}
+
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #fff0f6, #f0ecff);
+    background: linear-gradient(180deg, #fff0f7, #f0e8ff);
+    border-right: 1px solid #f9d4e8;
+}
+
+[data-testid="stMetric"] {
+    background: rgba(255,255,255,.82);
+    padding: 12px;
+    border: 1px solid #f8d5e8;
+    border-radius: 18px;
+}
+
+div[data-testid="stImage"] img {
+    border-radius: 17px;
+}
+
+.receipt {
+    background: white;
+    border: 2px dashed #ff9acb;
+    border-radius: 22px;
+    padding: 22px;
+    box-shadow: 0 8px 25px #ffc5e333;
+}
+
+.glam-banner {
+    background: linear-gradient(120deg, #ffdaed, #f0e1ff, #fff1c9);
+    border-radius: 24px;
+    padding: 24px;
+    text-align: center;
+    color: #a13d79;
+    border: 1px solid white;
+    box-shadow: 0 8px 25px #e5b0d522;
+}
+
+div[data-testid="stAlert"] {
+    border-radius: 16px;
+}
+
+hr {
+    border-color: #f6cfe4;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ===================== MENU ĐỒ UỐNG =====================
+
+# =====================================================
+# MENU ĐỒ UỐNG
+# =====================================================
 
 MENU = {
     "Trà sữa": [
@@ -69,61 +194,77 @@ MENU = {
             "name": "Trà sữa trân châu đường đen",
             "price": 45000,
             "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=800&q=80",
-            "desc": "Béo thơm, trân châu dẻo, đường đen đậm vị."
+            "desc": "Béo thơm, trân châu dẻo, đường đen đậm vị.",
+            "tag": "BEST SELLER 💗",
         },
         {
             "name": "Trà sữa ô long kem cheese",
             "price": 49000,
             "image": "https://images.unsplash.com/photo-1525385133512-2f3bdd039054?auto=format&fit=crop&w=800&q=80",
-            "desc": "Ô long thơm dịu cùng lớp kem cheese."
+            "desc": "Ô long thơm dịu, kem cheese béo mặn.",
+            "tag": "SIGNATURE ✨",
         },
         {
             "name": "Trà sữa khoai môn",
             "price": 45000,
             "image": "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=800&q=80",
-            "desc": "Khoai môn ngọt dịu, màu tím pastel."
+            "desc": "Khoai môn dịu ngọt, vibe tím pastel.",
+            "tag": "PURPLE MOOD 💜",
         },
         {
             "name": "Trà sữa dâu",
             "price": 47000,
             "image": "https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=800&q=80",
-            "desc": "Vị dâu thơm ngọt và sữa tươi mịn."
-        }
+            "desc": "Dâu thơm ngọt, sữa mịn màng.",
+            "tag": "PINK VIBES 🎀",
+        },
+        {
+            "name": "Hồng trà sữa",
+            "price": 39000,
+            "image": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
+            "desc": "Trà đậm vị, hậu ngọt thanh.",
+            "tag": "CLASSIC",
+        },
     ],
     "Matcha": [
         {
             "name": "Matcha latte",
             "price": 49000,
             "image": "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=800&q=80",
-            "desc": "Matcha xanh thơm, sữa tươi béo nhẹ."
+            "desc": "Matcha xanh thơm, sữa tươi béo nhẹ.",
+            "tag": "MATCHA GIRL 🍵",
         },
         {
             "name": "Matcha dâu latte",
             "price": 55000,
             "image": "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=800&q=80",
-            "desc": "Matcha thanh mát kết hợp dâu tây."
+            "desc": "Matcha thanh mát, dâu ngọt dịu.",
+            "tag": "PRETTY LAYERS 💗",
         },
         {
             "name": "Matcha kem cheese",
             "price": 55000,
             "image": "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=800&q=80",
-            "desc": "Matcha đậm vị và kem cheese béo mặn."
-        }
+            "desc": "Matcha đậm vị, kem cheese béo mặn.",
+            "tag": "CREAMY ✨",
+        },
     ],
     "Trà trái cây": [
         {
             "name": "Trà đào cam sả",
             "price": 42000,
             "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=800&q=80",
-            "desc": "Trà thanh mát, đào giòn, cam và sả."
+            "desc": "Đào giòn, cam tươi và sả thơm.",
+            "tag": "REFRESHING 🍑",
         },
         {
             "name": "Trà vải",
             "price": 45000,
             "image": "https://images.unsplash.com/photo-1513558161293-c5b0b182a0e4?auto=format&fit=crop&w=800&q=80",
-            "desc": "Hương vải ngọt dịu, thơm nhẹ."
-        }
-    ]
+            "desc": "Vải thơm dịu, ngọt nhẹ nhàng.",
+            "tag": "FLORAL 🌸",
+        },
+    ],
 }
 
 TOPPINGS = {
@@ -133,20 +274,37 @@ TOPPINGS = {
     "Thạch củ năng": 8000,
     "Pudding trứng": 8000,
     "Kem cheese": 12000,
-    "Thạch dừa": 7000
+    "Thạch dừa": 7000,
 }
 
 VOUCHERS = {
     "MOON10": {"min": 100000, "type": "percent", "value": 10},
     "MATCHA15": {"min": 150000, "type": "percent", "value": 15},
-    "FREESHIP": {"min": 80000, "type": "fixed", "value": 15000}
+    "FREESHIP": {"min": 80000, "type": "fixed", "value": 15000},
 }
 
-# ===================== TRẠNG THÁI ỨNG DỤNG =====================
+PRIZES = [
+    {"name": "Giảm 10% đơn hàng", "code": "MOON10",
+     "desc": "Áp dụng cho đơn từ 100.000đ."},
+    {"name": "Tặng topping trân châu", "code": None,
+     "desc": "Báo nhân viên để nhận quà ở lần ghé quán tiếp theo."},
+    {"name": "Giảm 15.000đ", "code": "FREESHIP",
+     "desc": "Áp dụng cho đơn từ 80.000đ."},
+    {"name": "Matcha giảm 15%", "code": "MATCHA15",
+     "desc": "Áp dụng cho đơn từ 150.000đ."},
+    {"name": "May mắn lần sau 🌷", "code": None,
+     "desc": "Cảm ơn bạn đã chơi cùng MOON TEA!"},
+]
 
-defaults = {
+
+# =====================================================
+# KHỞI TẠO SESSION
+# =====================================================
+
+DEFAULTS = {
     "cart": [],
     "page": "Trang chủ",
+    "voucher_input": "",
     "voucher": "",
     "discount": 0,
     "paid": False,
@@ -154,16 +312,22 @@ defaults = {
     "payment_method": "Tiền mặt",
     "total_paid": 0,
     "customer": "",
+    "phone": "",
     "reviews": [],
     "review_done": False,
     "spun": False,
-    "prize": None
+    "prize": None,
+    "checkout_ready": False,
 }
 
-for key, value in defaults.items():
+for key, value in DEFAULTS.items():
     if key not in st.session_state:
         st.session_state[key] = value
 
+
+# =====================================================
+# HÀM HỖ TRỢ
+# =====================================================
 
 def money(number):
     return f"{int(number):,}".replace(",", ".") + "đ"
@@ -176,84 +340,138 @@ def cart_subtotal():
     )
 
 
-def make_qr(text):
-    qr = qrcode.QRCode(box_size=8, border=2)
-    qr.add_data(text)
-    qr.make(fit=True)
-    img = qr.make_image(fill_color="#75476e", back_color="white")
-    output = BytesIO()
-    img.save(output, format="PNG")
-    return output.getvalue()
+def calculate_discount(amount, code):
+    voucher = VOUCHERS.get(code.upper().strip())
+    if not voucher or amount < voucher["min"]:
+        return 0
+    if voucher["type"] == "percent":
+        return round(amount * voucher["value"] / 100)
+    return min(amount, voucher["value"])
 
 
-# ===================== ĐIỀU HƯỚNG =====================
+def reset_order():
+    st.session_state.cart = []
+    st.session_state.voucher_input = ""
+    st.session_state.voucher = ""
+    st.session_state.discount = 0
+    st.session_state.paid = False
+    st.session_state.order_id = ""
+    st.session_state.payment_method = "Tiền mặt"
+    st.session_state.total_paid = 0
+    st.session_state.customer = ""
+    st.session_state.phone = ""
+    st.session_state.review_done = False
+    st.session_state.checkout_ready = False
+
+
+# =====================================================
+# SIDEBAR — ĐIỀU HƯỚNG
+# =====================================================
 
 with st.sidebar:
     st.markdown(
-        "<h1 style='text-align:center'>🌙 MOON TEA</h1>",
-        unsafe_allow_html=True
+        "<div style='text-align:center;font-size:52px'>🎀</div>"
+        "<h1 style='text-align:center'>MOON TEA</h1>"
+        "<p style='text-align:center;color:#ba6a9b'>"
+        "✨ PINK BLING CLUB ✨</p>",
+        unsafe_allow_html=True,
     )
-    st.caption("A little moonlight in every cup")
+
     st.divider()
+
+    pages = [
+        "Trang chủ",
+        "Đặt món",
+        "Giỏ hàng & Thanh toán",
+        "Vòng quay may mắn",
+        "Giới thiệu quán",
+        "Đánh giá & Phản hồi",
+    ]
 
     st.session_state.page = st.radio(
-        "Điều hướng",
-        [
-            "Trang chủ",
-            "Đặt món",
-            "Giỏ hàng & Thanh toán",
-            "Vòng quay may mắn",
-            "Giới thiệu quán",
-            "Đánh giá & Phản hồi"
-        ]
+        "MENU",
+        pages,
+        index=pages.index(st.session_state.page),
     )
 
     st.divider()
-    st.markdown("### 🛒 Giỏ hàng")
+    st.markdown("### 🛍️ YOUR BAG")
     st.write(
         f"Số lượng: {sum(i['qty'] for i in st.session_state.cart)} món"
     )
-    st.markdown(f"**{money(cart_subtotal())}**")
+    st.markdown(
+        f"<div class='price'>{money(cart_subtotal())}</div>",
+        unsafe_allow_html=True,
+    )
+
+    if st.button("💗 Xem giỏ hàng", use_container_width=True):
+        st.session_state.page = "Giỏ hàng & Thanh toán"
+        st.rerun()
+
+    st.caption("Made for pretty girls with pretty drinks ✨")
+
+
+# =====================================================
+# HEADER
+# =====================================================
 
 st.markdown("""
 <div class="hero">
-    <div class="brand">☾ MOON TEA</div>
-    <h3>Trà ngon, mood xinh, ngày dịu dàng ✨</h3>
-    <p>Khám phá hương vị yêu thích trong không gian pastel Hàn Quốc.</p>
+    <div class="brand">✦ MOON TEA ✦</div>
+    <div class="hero-subtitle">
+        PINK BLING EDITION · Sip pretty, shine brighter 💗
+    </div>
+    <br>
+    <span class="pink-pill">GLITTER ✨</span>
+    <span class="pink-pill">PASTEL 🎀</span>
+    <span class="pink-pill">SLAY ALL DAY 💅</span>
 </div>
 """, unsafe_allow_html=True)
 
-# ===================== TRANG CHỦ =====================
+st.write("")
+
+
+# =====================================================
+# TRANG CHỦ
+# =====================================================
 
 if st.session_state.page == "Trang chủ":
-    left, right = st.columns([1.2, 1])
+
+    left, right = st.columns([1.15, 1])
 
     with left:
-        st.title("Chạm vào vị ngọt của riêng bạn 💗")
-        st.write("""
-        MOON TEA là góc nhỏ dành cho những người yêu trà sữa,
-        matcha và những khoảnh khắc thư giãn.
-        
-        Chọn thức uống, thêm topping yêu thích và tùy chỉnh
-        độ ngọt theo đúng gu của bạn.
-        """)
-        if st.button("🧋 Bắt đầu đặt món"):
+        st.markdown("# Hey bestie! 💗")
+        st.markdown("## Hôm nay mình uống gì cho thật slay?")
+        st.write(
+            "Chào mừng đến MOON TEA — thiên đường trà sữa pastel, "
+            "matcha xanh mướt và topping xinh xắn."
+        )
+        st.write(
+            "Mix đồ uống theo gu của bạn, săn voucher và thử vận may "
+            "để nhận những món quà siêu cưng."
+        )
+
+        if st.button("💅 LET'S ORDER!", type="primary"):
             st.session_state.page = "Đặt món"
             st.rerun()
+
+        st.markdown("#### ✨ Your mood, your drink, your rules.")
 
     with right:
         st.image(
             "https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=1000&q=85",
-            use_container_width=True
+            use_container_width=True,
         )
 
-    st.markdown("### 🌟 Món được yêu thích")
-    cols = st.columns(3)
+    st.markdown("## 💖 THE IT-GIRL PICKS")
+
     featured = [
         MENU["Trà sữa"][0],
         MENU["Matcha"][0],
-        MENU["Trà trái cây"][0]
+        MENU["Trà trái cây"][0],
     ]
+
+    cols = st.columns(3)
 
     for col, item in zip(cols, featured):
         with col:
@@ -261,27 +479,41 @@ if st.session_state.page == "Trang chủ":
             st.markdown(f"**{item['name']}**")
             st.markdown(
                 f"<div class='price'>{money(item['price'])}</div>",
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
-            if st.button("Thêm nhanh", key="quick_" + item["name"]):
+
+            if st.button("＋ Add to bag", key="home_" + item["name"]):
                 st.session_state.cart.append({
                     "name": item["name"],
                     "qty": 1,
                     "base_price": item["price"],
                     "topping": "Không topping",
+                    "topping_price": 0,
                     "sweetness": "50%",
                     "ice": "Có đá",
-                    "unit_price": item["price"]
+                    "unit_price": item["price"],
                 })
-                st.toast("Đã thêm vào giỏ hàng!")
+                st.toast("Added to your bag! 💗")
                 st.rerun()
 
-# ===================== ĐẶT MÓN =====================
+    st.markdown("""
+    <div class="glam-banner">
+        <h2>✨ A LITTLE GLITTER, A LOT OF LOVE ✨</h2>
+        Mỗi ly nước là một lý do để bạn tỏa sáng.
+    </div>
+    """, unsafe_allow_html=True)
+
+
+# =====================================================
+# ĐẶT MÓN
+# =====================================================
 
 elif st.session_state.page == "Đặt món":
-    st.title("🧋 Menu MOON TEA")
-    category = st.selectbox("Chọn nhóm đồ uống", list(MENU.keys()))
 
+    st.title("🧋 THE DRINK MENU")
+    st.write("Chọn món, mix topping và customize theo gu của bạn!")
+
+    category = st.selectbox("Chọn nhóm đồ uống", list(MENU.keys()))
     products = MENU[category]
 
     for start in range(0, len(products), 2):
@@ -289,45 +521,57 @@ elif st.session_state.page == "Đặt món":
 
         for col, item in zip(cols, products[start:start + 2]):
             with col:
-                st.markdown("<div class='card'>", unsafe_allow_html=True)
+                st.markdown(
+                    "<div class='pink-card'>",
+                    unsafe_allow_html=True,
+                )
+
                 st.image(item["image"], use_container_width=True)
-                st.subheader(item["name"])
+                st.markdown(f"### {item['name']}")
+                st.markdown(
+                    f"<span class='pink-pill'>{item['tag']}</span>",
+                    unsafe_allow_html=True,
+                )
                 st.caption(item["desc"])
                 st.markdown(
                     f"<div class='price'>{money(item['price'])}</div>",
-                    unsafe_allow_html=True
+                    unsafe_allow_html=True,
                 )
 
-                with st.form("order_" + item["name"]):
+                with st.form("form_" + item["name"]):
                     qty = st.number_input(
-                        "Số lượng",
+                        "Số lượng ly",
                         min_value=1,
-                        max_value=20,
+                        max_value=30,
                         value=1,
-                        step=1
+                        step=1,
                     )
+
                     topping = st.selectbox(
                         "Topping",
-                        list(TOPPINGS.keys())
+                        list(TOPPINGS.keys()),
                     )
+
                     sweetness = st.select_slider(
                         "Độ ngọt",
                         options=["0%", "30%", "50%", "70%", "100%"],
-                        value="50%"
+                        value="50%",
                     )
+
                     ice = st.radio(
                         "Lượng đá",
                         ["Có đá", "Ít đá", "Không đá"],
-                        horizontal=True
+                        horizontal=True,
                     )
 
                     add = st.form_submit_button(
-                        "＋ Thêm vào giỏ",
-                        use_container_width=True
+                        "💗 ADD TO BAG",
+                        use_container_width=True,
                     )
 
                     if add:
                         topping_price = TOPPINGS[topping]
+
                         st.session_state.cart.append({
                             "name": item["name"],
                             "qty": int(qty),
@@ -336,82 +580,98 @@ elif st.session_state.page == "Đặt món":
                             "topping_price": topping_price,
                             "sweetness": sweetness,
                             "ice": ice,
-                            "unit_price": item["price"] + topping_price
+                            "unit_price": item["price"] + topping_price,
                         })
-                        st.success("Đã thêm món vào giỏ!")
+
+                        st.success("Món đã vào giỏ! Slayyy 💅")
                         st.rerun()
 
                 st.markdown("</div>", unsafe_allow_html=True)
 
-# ===================== GIỎ HÀNG & THANH TOÁN =====================
+
+# =====================================================
+# GIỎ HÀNG & THANH TOÁN
+# =====================================================
 
 elif st.session_state.page == "Giỏ hàng & Thanh toán":
-    st.title("🧾 Giỏ hàng & Thanh toán")
+
+    st.title("🛍️ YOUR BAG & CHECKOUT")
 
     if not st.session_state.cart:
-        st.info("Giỏ hàng trống. Hãy chọn món trong mục Đặt món.")
-        if st.button("Quay lại menu"):
+        st.info("Giỏ hàng trống rồi bestie ơi! Chọn món nha 💗")
+
+        if st.button("Đi đến menu"):
             st.session_state.page = "Đặt món"
             st.rerun()
 
     else:
         for idx, item in enumerate(st.session_state.cart):
             with st.container(border=True):
-                col1, col2, col3 = st.columns([4, 1, 1])
+                c1, c2, c3 = st.columns([4, 1, 1])
 
-                with col1:
+                with c1:
                     st.markdown(f"**{item['name']}**")
                     st.caption(
-                        f"Topping: {item.get('topping', 'Không topping')} · "
-                        f"Độ ngọt: {item.get('sweetness', '50%')} · "
-                        f"{item.get('ice', 'Có đá')}"
+                        f"Topping: {item['topping']} · "
+                        f"Độ ngọt: {item['sweetness']} · {item['ice']}"
+                    )
+                    st.caption(
+                        f"{money(item['base_price'])} + "
+                        f"{money(item['topping_price'])}/ly topping"
                     )
 
-                with col2:
-                    st.write(f"x {item['qty']}")
+                with c2:
+                    st.write(f"× {item['qty']}")
 
-                with col3:
-                    st.write(money(item["unit_price"] * item["qty"]))
-                    if st.button("Xóa", key=f"delete_{idx}"):
+                with c3:
+                    st.markdown(
+                        f"**{money(item['unit_price'] * item['qty'])}**"
+                    )
+
+                    if st.button("🗑️ Xóa", key=f"delete_{idx}"):
                         st.session_state.cart.pop(idx)
                         st.rerun()
 
         subtotal = cart_subtotal()
 
         st.divider()
-        st.subheader("🎟️ Voucher")
+        st.markdown("## 🎟️ VOUCHER BABE")
 
         with st.form("voucher_form"):
-            voucher_code = st.text_input(
-                "Nhập mã voucher",
-                placeholder="MOON10 / MATCHA15 / FREESHIP"
+            code = st.text_input(
+                "Nhập mã giảm giá",
+                value=st.session_state.voucher_input,
+                placeholder="MOON10 / MATCHA15 / FREESHIP",
             ).strip().upper()
-            apply = st.form_submit_button("Áp dụng voucher")
+
+            apply = st.form_submit_button("✨ APPLY VOUCHER")
 
             if apply:
-                voucher = VOUCHERS.get(voucher_code)
+                discount = calculate_discount(subtotal, code)
 
-                if voucher and subtotal >= voucher["min"]:
-                    if voucher["type"] == "percent":
-                        discount = round(subtotal * voucher["value"] / 100)
-                    else:
-                        discount = voucher["value"]
-
-                    st.session_state.voucher = voucher_code
+                if code in VOUCHERS and subtotal >= VOUCHERS[code]["min"]:
+                    st.session_state.voucher = code
+                    st.session_state.voucher_input = code
                     st.session_state.discount = discount
-                    st.success(
-                        f"Áp dụng thành công: giảm {money(discount)}"
-                    )
-                elif voucher:
-                    st.session_state.voucher = ""
-                    st.session_state.discount = 0
-                    st.error(
-                        "Đơn hàng chưa đạt giá trị tối thiểu của voucher."
-                    )
+                    st.success(f"Yasss! Bạn tiết kiệm {money(discount)} 💗")
                 else:
                     st.session_state.voucher = ""
+                    st.session_state.voucher_input = code
                     st.session_state.discount = 0
-                    st.error("Mã voucher không hợp lệ.")
+                    st.error(
+                        "Mã không hợp lệ hoặc đơn hàng chưa đủ giá trị tối thiểu."
+                    )
+
+        # Voucher có thể được chọn từ vòng quay
+        if st.session_state.voucher in VOUCHERS:
+            discount = calculate_discount(
+                subtotal,
+                st.session_state.voucher,
+            )
+            if subtotal >= VOUCHERS[st.session_state.voucher]["min"]:
+                st.session_state.discount = discount
+            else:
+                st.session_state.discount = 0
 
         discount = st.session_state.discount
         total = max(0, subtotal - discount)
@@ -419,28 +679,37 @@ elif st.session_state.page == "Giỏ hàng & Thanh toán":
         c1, c2, c3 = st.columns(3)
         c1.metric("Tạm tính", money(subtotal))
         c2.metric("Giảm giá", "-" + money(discount))
-        c3.metric("Tổng thanh toán", money(total))
+        c3.metric("TOTAL 💗", money(total))
 
         st.divider()
-        st.subheader("👤 Thông tin khách hàng")
+        st.markdown("## 💳 CHECKOUT")
 
         with st.form("checkout_form"):
-            customer = st.text_input("Tên khách hàng")
-            phone = st.text_input("Số điện thoại (không bắt buộc)")
+            customer = st.text_input(
+                "Tên khách hàng",
+                value=st.session_state.customer,
+            )
+
+            phone = st.text_input(
+                "Số điện thoại (không bắt buộc)",
+                value=st.session_state.phone,
+            )
+
             payment = st.radio(
                 "Phương thức thanh toán",
-                ["Tiền mặt", "Mã QR"],
-                horizontal=True
+                ["Tiền mặt", "Chuyển khoản / QR"],
+                horizontal=True,
             )
+
             checkout = st.form_submit_button(
-                "Tiếp tục thanh toán",
+                "CONTINUE TO PAYMENT ✨",
                 type="primary",
-                use_container_width=True
+                use_container_width=True,
             )
 
             if checkout:
                 if not customer.strip():
-                    st.error("Vui lòng nhập tên khách hàng.")
+                    st.error("Nhập tên khách hàng trước nha bestie!")
                 else:
                     st.session_state.customer = customer.strip()
                     st.session_state.phone = phone.strip()
@@ -449,36 +718,43 @@ elif st.session_state.page == "Giỏ hàng & Thanh toán":
                     st.session_state.order_id = (
                         "MT" + datetime.now().strftime("%y%m%d%H%M%S")
                     )
+                    st.session_state.checkout_ready = True
                     st.session_state.paid = False
                     st.rerun()
 
-        if st.session_state.order_id and not st.session_state.paid:
-            st.markdown("### Xác nhận đơn hàng")
+        if (
+            st.session_state.checkout_ready
+            and not st.session_state.paid
+        ):
+            st.markdown("### ✨ CONFIRM YOUR ORDER")
+
             st.write(f"**Mã đơn:** {st.session_state.order_id}")
             st.write(f"**Khách hàng:** {st.session_state.customer}")
-            st.write(f"**Số tiền:** {money(st.session_state.total_paid)}")
+            st.write(f"**Tổng tiền:** {money(st.session_state.total_paid)}")
 
-            if st.session_state.payment_method == "Mã QR":
-                qr_content = (
-                    f"MOON TEA | Don {st.session_state.order_id} | "
-                    f"So tien {st.session_state.total_paid} VND"
-                )
-                st.image(
-                    make_qr(qr_content),
-                    width=230,
-                    caption="QR demo — chưa kết nối ngân hàng"
-                )
-                st.warning(
-                    "Đây là QR minh họa, chưa phải QR chuyển khoản "
-                    "ngân hàng. Nút bên dưới chỉ mô phỏng xác nhận."
+            if st.session_state.payment_method == "Chuyển khoản / QR":
+                st.markdown("""
+                <div class="glam-banner">
+                    <div style="font-size:48px">💳 ✨ 💗</div>
+                    <h2>SCAN & SLAY</h2>
+                    <p>Phương thức chuyển khoản đã được chọn.</p>
+                    <p>Vui lòng sử dụng QR ngân hàng thật của quán
+                    hoặc nhập thông tin tài khoản đã được quán cấu hình.</p>
+                    <p><b>Chưa có QR ngân hàng trong bản demo này.</b></p>
+                </div>
+                """, unsafe_allow_html=True)
+
+                st.info(
+                    "Không dùng hình minh họa để chuyển tiền. "
+                    "Nút xác nhận bên dưới chỉ mô phỏng thanh toán."
                 )
             else:
-                st.info("Bạn thanh toán tiền mặt tại quầy.")
+                st.info("Bạn sẽ thanh toán tiền mặt tại quầy.")
 
             if st.button(
-                "✅ Xác nhận thanh toán thành công",
+                "💗 XÁC NHẬN THANH TOÁN THÀNH CÔNG",
                 type="primary",
-                use_container_width=True
+                use_container_width=True,
             ):
                 st.session_state.paid = True
                 st.session_state.review_done = False
@@ -487,89 +763,83 @@ elif st.session_state.page == "Giỏ hàng & Thanh toán":
 
         if st.session_state.paid:
             st.divider()
-            st.markdown("## 🌙 MOON TEA — HÓA ĐƠN")
-            st.write(f"Mã đơn: {st.session_state.order_id}")
-            st.write(f"Khách hàng: {st.session_state.customer}")
-            st.write(
-                f"Phương thức thanh toán: "
-                f"{st.session_state.payment_method}"
+
+            st.markdown(
+                "<div class='receipt'>"
+                "<h2 style='text-align:center'>🌙 MOON TEA</h2>"
+                "<p style='text-align:center'>YOUR PINK BLING RECEIPT ✨</p>"
+                "</div>",
+                unsafe_allow_html=True,
             )
+
+            st.write(f"**Mã đơn:** {st.session_state.order_id}")
+            st.write(f"**Khách hàng:** {st.session_state.customer}")
+            st.write(
+                f"**Thanh toán:** {st.session_state.payment_method}"
+            )
+            st.caption(datetime.now().strftime("%d/%m/%Y %H:%M"))
 
             for item in st.session_state.cart:
                 amount = item["unit_price"] * item["qty"]
                 st.write(
-                    f"- {item['name']} × {item['qty']}: {money(amount)}"
+                    f"**{item['name']}** × {item['qty']} — {money(amount)}"
+                )
+                st.caption(
+                    f"{item['topping']} · {item['sweetness']} · {item['ice']}"
                 )
 
+            st.divider()
             st.write(f"Tạm tính: {money(subtotal)}")
             st.write(f"Giảm giá: -{money(discount)}")
-            st.subheader(f"TỔNG CỘNG: {money(total)}")
+            st.markdown(f"## TOTAL: {money(total)} 💗")
 
-        if st.button("Tiếp tục chọn món"):
+        if st.button("← Tiếp tục chọn món"):
             st.session_state.page = "Đặt món"
             st.rerun()
 
 
-# ===================== VÒNG QUAY MAY MẮN =====================
+# =====================================================
+# VÒNG QUAY MAY MẮN
+# =====================================================
 
 elif st.session_state.page == "Vòng quay may mắn":
-    st.title("🎡 Vòng quay ánh trăng")
-    st.write("Thử vận may để nhận voucher hoặc quà nhỏ từ MOON TEA!")
 
-    prizes = [
-        {
-            "name": "Voucher giảm 10%",
-            "detail": "Mã MOON10 — áp dụng cho đơn từ 100.000đ",
-            "code": "MOON10"
-        },
-        {
-            "name": "Tặng topping trân châu",
-            "detail": "Vui lòng báo nhân viên khi sử dụng quà.",
-            "code": None
-        },
-        {
-            "name": "Voucher giảm 15.000đ",
-            "detail": "Mã FREESHIP — áp dụng cho đơn từ 80.000đ",
-            "code": "FREESHIP"
-        },
-        {
-            "name": "Voucher Matcha giảm 15%",
-            "detail": "Mã MATCHA15 — áp dụng cho đơn từ 150.000đ",
-            "code": "MATCHA15"
-        },
-        {
-            "name": "Chúc bạn may mắn lần sau",
-            "detail": "Cảm ơn bạn đã chơi cùng MOON TEA!",
-            "code": None
-        }
-    ]
+    st.title("🎡 THE PINK BLING LUCKY WHEEL")
+    st.write("Quay một lần để nhận voucher hoặc quà nhỏ nha bestie!")
 
     st.markdown("""
-    <div style="
-        text-align:center; padding:32px;
-        background:linear-gradient(120deg,#ffe0ee,#e7deff);
-        border-radius:28px; font-size:65px;">
-        🎀 🎁 🌙 🎁 🎀
-        <h2>MOON TEA LUCKY WHEEL</h2>
+    <div class="glam-banner">
+        <div style="font-size:60px">💗 ✨ 🎀 ✨ 💗</div>
+        <h2>SPIN THE GLAM!</h2>
+        <p>May mắn đang chờ bạn phía bên kia ánh kim tuyến.</p>
     </div>
     """, unsafe_allow_html=True)
 
     if not st.session_state.spun:
-        if st.button("✨ QUAY NGAY ✨", type="primary"):
-            st.session_state.prize = random.choice(prizes)
+        if st.button(
+            "✨ SPIN NOW, BABE! ✨",
+            type="primary",
+            use_container_width=True,
+        ):
+            st.session_state.prize = random.choice(PRIZES)
             st.session_state.spun = True
             st.rerun()
+
     else:
         prize = st.session_state.prize
-        st.success(f"🎉 Phần quà của bạn: {prize['name']}")
-        st.write(prize["detail"])
+
+        st.balloons()
+        st.success(f"🎉 Bạn nhận được: {prize['name']}")
+        st.write(prize["desc"])
 
         if prize["code"]:
             st.code(prize["code"])
-            if st.button("Dùng voucher này"):
-                st.session_state.page = "Giỏ hàng & Thanh toán"
+
+            if st.button("💗 Dùng voucher này"):
                 st.session_state.voucher = prize["code"]
+                st.session_state.voucher_input = prize["code"]
                 st.session_state.discount = 0
+                st.session_state.page = "Giỏ hàng & Thanh toán"
                 st.rerun()
 
         if st.button("Quay lại từ đầu"):
@@ -577,147 +847,168 @@ elif st.session_state.page == "Vòng quay may mắn":
             st.session_state.prize = None
             st.rerun()
 
+    st.caption(
+        "Vòng quay là tính năng demo. Quà thực tế do quán xác nhận."
+    )
 
-# ===================== GIỚI THIỆU QUÁN =====================
+
+# =====================================================
+# GIỚI THIỆU QUÁN
+# =====================================================
 
 elif st.session_state.page == "Giới thiệu quán":
-    st.title("🌙 Câu chuyện MOON TEA")
 
-    col1, col2 = st.columns(2)
+    st.title("💗 MEET MOON TEA")
 
-    with col1:
+    left, right = st.columns(2)
+
+    with left:
         st.image(
             "https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=1000&q=85",
-            use_container_width=True
+            use_container_width=True,
         )
 
-    with col2:
-        st.subheader("Một chút ánh trăng trong mỗi chiếc ly")
-        st.write("""
-        MOON TEA lấy cảm hứng từ phong cách Hàn Quốc nhẹ nhàng,
-        gam màu pastel và những khoảnh khắc nghỉ ngơi thật dễ chịu.
+    with right:
+        st.markdown("## Một chút ánh trăng trong mỗi chiếc ly 🌙")
 
-        Chúng mình muốn mỗi ly trà đều là một niềm vui nhỏ:
-        từ trà sữa cổ điển, matcha xanh thơm đến trà trái cây tươi mát.
+        st.write("""
+        MOON TEA là góc nhỏ dành cho những tâm hồn yêu đồ uống,
+        màu pastel và những khoảnh khắc thật xinh.
+
+        Từ trà sữa cổ điển đến matcha thơm dịu, mỗi ly đều được
+        thiết kế để bạn tận hưởng hương vị theo cách riêng.
         """)
 
-        st.markdown("### 🌸 Điều chúng mình yêu")
-        st.write("- Tùy chỉnh độ ngọt và lượng đá.")
-        st.write("- Nhiều loại topping để lựa chọn.")
-        st.write("- Menu phù hợp cho những buổi gặp gỡ bạn bè.")
+        st.markdown("### 🎀 OUR PROMISE")
+        st.write("✨ Tùy chỉnh độ ngọt và lượng đá.")
+        st.write("✨ Nhiều loại topping cho bạn mix.")
+        st.write("✨ Không gian và trải nghiệm nhẹ nhàng.")
 
-        st.markdown("### 📍 Thông tin quán")
+        st.markdown("### 📍 THÔNG TIN QUÁN")
         st.write("Địa chỉ: 123 Đường Ánh Trăng, TP. Hồ Chí Minh")
         st.write("Giờ mở cửa: 09:00 – 22:00")
         st.write("Hotline: 0900 123 456")
 
         st.caption(
-            "Thông tin địa chỉ và hotline trên là mẫu; hãy sửa thành "
-            "thông tin thật của quán."
+            "Địa chỉ và số điện thoại là thông tin mẫu. "
+            "Hãy thay bằng thông tin thật trước khi sử dụng."
         )
+
+    st.markdown("""
+    <div class="glam-banner">
+        <h2>THANK YOU FOR LETTING US BE PART OF YOUR DAY 💗</h2>
+        Sip slowly. Shine softly. Slay always.
+    </div>
+    """, unsafe_allow_html=True)
 
     if st.button("🧋 Đặt món ngay"):
         st.session_state.page = "Đặt món"
         st.rerun()
 
 
-# ===================== ĐÁNH GIÁ & PHẢN HỒI =====================
+# =====================================================
+# ĐÁNH GIÁ & PHẢN HỒI
+# =====================================================
 
 elif st.session_state.page == "Đánh giá & Phản hồi":
-    st.title("💌 Đánh giá & Phản hồi")
+
+    st.title("💌 RATE YOUR EXPERIENCE")
+    st.markdown("### Your opinion is the real sparkle! ✨")
 
     if not st.session_state.paid:
         st.info(
-            "Form đánh giá sẽ xuất hiện sau khi bạn xác nhận "
-            "thanh toán thành công."
+            "Form đánh giá sẽ mở sau khi bạn xác nhận thanh toán."
         )
 
-        if st.button("Đến thanh toán"):
+        if st.button("Đến giỏ hàng"):
             st.session_state.page = "Giỏ hàng & Thanh toán"
             st.rerun()
 
     else:
         st.success(
-            f"Cảm ơn {st.session_state.customer} đã đặt món tại MOON TEA!"
+            f"Cảm ơn {st.session_state.customer} đã ghé MOON TEA! 💗"
         )
 
         if not st.session_state.review_done:
-            st.write("Trải nghiệm của bạn hôm nay thế nào?")
 
             with st.form("review_form"):
                 stars = st.select_slider(
-                    "Chấm điểm",
+                    "Bạn chấm MOON TEA bao nhiêu sao?",
                     options=[1, 2, 3, 4, 5],
                     value=5,
-                    format_func=lambda n: "⭐" * n
+                    format_func=lambda n: "⭐" * n,
                 )
 
                 comment = st.text_area(
                     "Lời nhắn cho quán",
-                    placeholder="Bạn thích món nào? Chúng mình cần cải thiện điều gì?"
+                    placeholder=(
+                        "Món bạn yêu thích, trải nghiệm của bạn "
+                        "hoặc điều chúng mình có thể cải thiện..."
+                    ),
                 )
 
-                name = st.text_input(
+                display_name = st.text_input(
                     "Tên hiển thị",
-                    value=st.session_state.customer
+                    value=st.session_state.customer,
                 )
 
-                submit_review = st.form_submit_button(
-                    "Gửi đánh giá 💗",
+                send = st.form_submit_button(
+                    "SEND LOVE 💗",
                     type="primary",
-                    use_container_width=True
+                    use_container_width=True,
                 )
 
-                if submit_review:
+                if send:
                     st.session_state.reviews.append({
-                        "name": name.strip() or "Khách MOON TEA",
+                        "name": display_name.strip() or "Khách MOON TEA",
                         "stars": stars,
                         "comment": comment.strip(),
                         "order": st.session_state.order_id,
-                        "time": datetime.now().strftime("%d/%m/%Y %H:%M")
+                        "time": datetime.now().strftime("%d/%m/%Y %H:%M"),
                     })
+
                     st.session_state.review_done = True
                     st.rerun()
 
         else:
-            st.success("Đã nhận đánh giá. Cảm ơn bạn thật nhiều! 💗")
+            st.success("Đã nhận feedback. Thank you, queen! 👑")
 
-            if st.button("Tạo đơn hàng mới"):
-                st.session_state.cart = []
-                st.session_state.voucher = ""
-                st.session_state.discount = 0
-                st.session_state.paid = False
-                st.session_state.order_id = ""
-                st.session_state.total_paid = 0
-                st.session_state.customer = ""
-                st.session_state.review_done = False
-                st.session_state.spun = False
-                st.session_state.prize = None
+            if st.button("✨ Tạo đơn hàng mới"):
+                reset_order()
                 st.session_state.page = "Đặt món"
                 st.rerun()
 
     if st.session_state.reviews:
         st.divider()
-        st.subheader("💬 Phản hồi gần đây")
+        st.markdown("## 💬 LOVE NOTES")
 
         for review in reversed(st.session_state.reviews[-10:]):
             with st.container(border=True):
                 st.write(
                     f"**{review['name']}** · {'⭐' * review['stars']}"
                 )
+
                 if review["comment"]:
                     st.write(review["comment"])
+
                 st.caption(
-                    f"{review['time']} · Mã đơn {review['order']}"
+                    f"{review['time']} · Đơn {review['order']}"
                 )
 
 
-# ===================== FOOTER =====================
+# =====================================================
+# FOOTER
+# =====================================================
 
 st.divider()
-st.markdown(
-    "<div style='text-align:center;color:#947c95'>"
-    "Made with ♡ by MOON TEA · Sip slowly, shine softly 🌙"
-    "</div>",
-    unsafe_allow_html=True
-)
+
+st.markdown("""
+<div style="
+    text-align:center;
+    color:#bc76a2;
+    padding:18px;
+    font-weight:700;">
+    ✨ MADE WITH LOVE & GLITTER ✨<br>
+    MOON TEA · SIP PRETTY, SHINE BRIGHTER 💗
+</div>
+""", unsafe_allow_html=True)
